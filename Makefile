@@ -1,4 +1,4 @@
-GCCO = g++ -Wall
+GCCO = g++ -Wall -O2
 
 default: main.exe
 

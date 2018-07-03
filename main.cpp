@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <ctime>
 
 #include "uint1024.h"
 
@@ -24,7 +25,7 @@ uint1024 pow_mod(uint1024 x, const uint1024 & m, const uint1024 & n) {
     return res;
 }
 
-const int MRR = 200;
+const int MRR = 50;
 uint64 xList[MRR];
 bool runMillerRabin(uint1024 n) {
     if (n < 5) {
@@ -36,7 +37,7 @@ bool runMillerRabin(uint1024 n) {
         k ++;
         m >>= 1;
     }
-    for (int r = 0; r <= MRR; r ++) {
+    for (int r = 0; r < MRR; r ++) {
         uint1024 x = xList[r];
         x = x % (n - 2) + 2;
         uint1024 xLast = pow_mod(x, m, n);
@@ -100,7 +101,7 @@ bool runMillerRabin2(uint64 n) {
         k ++;
         m >>= 1;
     }
-    for (int r = 0; r < 200; r ++) {
+    for (int r = 0; r < MRR; r ++) {
         uint64 x = xList[r];
         x = x % (n - 2) + 2;
         uint64 xLast = pow_mod(x, m, n);
@@ -163,8 +164,20 @@ void selfJudge2() {
     }
 }
 
+void findPrime() {
+    int len = 512;
+    uint1024 n;
+    do {
+        n.random(len);
+        std::cout << "checking: n = " << n << std::endl;
+    } while(! runMillerRabin(n));
+    std::cout << "n = " << n << " is a prime number." << std::endl;
+}
+
 int main() {
-    srand(12345);
-    selfJudge2();
+    srand(time(0));
+    //selfJudge1();
+    //selfJudge2();
+    findPrime();
     return 0;
 }
